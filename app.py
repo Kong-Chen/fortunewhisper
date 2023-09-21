@@ -2,12 +2,14 @@ from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
+from linebot.models import ImageSendMessage
 import os
 import uuid
 from psycopg2.extensions import adapt, register_adapter
 import psycopg2
 from datetime import datetime
 import mysql.connector
+import requests
 
 app = Flask(__name__)
 
@@ -61,17 +63,45 @@ def handle_message(event):
     cursor = connection.cursor()
     cursor.execute("SELECT member_name FROM member")
     existing_user = cursor.fetchone()
-    #print(existing_user)
+
 
 
     if event.source.type == 'user':
         profile = line_bot_api.get_profile(user_line_id)
         user_nickname = profile.display_name
 
-    try:        
-        line_bot_api.reply_message(
+    try:
+        if user_message =='Nasa':
+            # API 密鑰
+            api_key = "74K2SccksUYY9UL8P6FPb7oz3Vn0JFacjP5ZPdPh"
+
+            # API 網址
+            url = "https://api.nasa.gov/planetary/apod"
+
+            # API 參數
+            params = {
+                "api_key": api_key
+            }
+
+            # 發送 API 請求
+            response = requests.get(url, params=params)
+
+            # 取得 API 的返回值
+            data = response.json()
+
+            # 顯示照片的網址
+            print("Picture URL:", data["url"])
+            line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=existing_user[0])
+            ImageSendMessage(
+                original_content_url=data["url"],
+                preview_image_url=data["url"]
+        )
+    )
+        else:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text=existing_user[0])
         )
         
     except psycopg2.Error as e:
