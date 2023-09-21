@@ -57,6 +57,13 @@ def handle_message(event):
     user_line_id = event.source.user_id
     user_id = None
     user_nickname = None
+    
+    cursor = connection.cursor()
+    cursor.execute("SELECT member_name FROM member")
+    existing_user = cursor.fetchall()
+    print(existing_user)
+
+
     if event.source.type == 'user':
         profile = line_bot_api.get_profile(user_line_id)
         user_nickname = profile.display_name
@@ -64,7 +71,7 @@ def handle_message(event):
     try:        
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text="你的訊息對話有收到喔!special_function")
+            TextSendMessage(text=existing_user)
         )
         
     except psycopg2.Error as e:
@@ -75,7 +82,7 @@ def handle_message(event):
         )
 
     finally:
-
+        cursor.close()
         connection.close()
 
 if __name__ == "__main__":
