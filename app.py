@@ -7,7 +7,7 @@ import uuid
 from psycopg2.extensions import adapt, register_adapter
 import psycopg2
 from datetime import datetime
-import mysql.connector
+# import mysql.connector
 
 app = Flask(__name__)
 
@@ -43,6 +43,7 @@ def callback():
 def handle_message(event):
     
     # 建立連接 (修改)
+    """
     connection = mysql.connector.connect(
         host="fortune.ckgadenebkdr.ap-northeast-3.rds.amazonaws.com",
         port="3306",
@@ -50,7 +51,7 @@ def handle_message(event):
         user="admin",
         password="Aa123456"
     )
-    
+    """
     # 收到使用者的訊息
     timestamp = datetime.now()
     user_message = event.message.text
