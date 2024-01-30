@@ -111,6 +111,7 @@ def handle_message(event):
             TextSendMessage(text="資料庫錯誤啦!")
         )
 
+
     finally:
         cursor.close()
         connection.close()
