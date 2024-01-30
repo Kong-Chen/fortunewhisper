@@ -60,9 +60,10 @@ def handle_message(event):
     user_id = None
     user_nickname = None
     
-    cursor = connection.cursor()
-    cursor.execute("SELECT member_name FROM member")
-    existing_user = cursor.fetchone()
+    
+    #cursor = connection.cursor()
+    #cursor.execute("SELECT member_name FROM member")
+    #existing_user = cursor.fetchone()
 
 
 
@@ -101,7 +102,7 @@ def handle_message(event):
         else:
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text=existing_user[0])
+                TextSendMessage(text='123')
         )
         
     except psycopg2.Error as e:
