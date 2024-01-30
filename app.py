@@ -45,13 +45,16 @@ def callback():
 def handle_message(event):
     
     # 建立連接 (修改)
+    """
     connection = mysql.connector.connect(
-        host="fortune.ckgadenebkdr.ap-northeast-3.rds.amazonaws.com",
-        port="3306",
-        database="members",
-        user="admin",
-        password="Aa123456"
+    host="fortune.ckgadenebkdr.ap-northeast-3.rds.amazonaws.com",
+    port="3306",
+    database="members",
+    user="admin",
+    password="Aa123456"
     )
+    """
+
     
     # 收到使用者的訊息
     timestamp = datetime.now()
@@ -113,9 +116,9 @@ def handle_message(event):
         )
 
 
-    finally:
-        cursor.close()
-        connection.close()
+    #finally:
+        # cursor.close()
+        # connection.close()
 
 if __name__ == "__main__":
     # 在本地運行時才啟動伺服器
