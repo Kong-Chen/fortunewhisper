@@ -26,19 +26,25 @@ register_adapter(uuid.UUID, adapt_uuid)
 
 @app.route("/callback", methods=['GET','POST'])
 def callback():
-    # 取得 request headers 中的 X-Line-Signature 屬性
-    signature = request.headers['X-Line-Signature']
     
-    # 取得 request 的 body 內容
-    body = request.get_data(as_text=True)
-    
-    try:
-        # 驗證簽章
-        handler.handle(body, signature)
-    except InvalidSignatureError:
-        abort(400)
-    
-    return 'OK'
+    if request.method == 'GET':
+        # 處理 GET 請求的邏輯
+        return "This is a GET request."
+    elif request.method == 'POST':
+        # 處理 POST 請求的邏輯    
+        # 取得 request headers 中的 X-Line-Signature 屬性
+        signature = request.headers['X-Line-Signature']
+        
+        # 取得 request 的 body 內容
+        body = request.get_data(as_text=True)
+        
+        try:
+            # 驗證簽章
+            handler.handle(body, signature)
+        except InvalidSignatureError:
+            abort(400)
+        
+        return 'OK'
 
 
 @handler.add(MessageEvent, message=TextMessage)
