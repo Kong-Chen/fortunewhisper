@@ -43,6 +43,8 @@ def callback():
         token = 'PPb8rGTHk5j1Bz3YaGiDVGlJ1qQAxsyqYs7etGKVMAV' #Kong
         message = '通知喔！'
         response = send_line_notify(message, token)
+        return "OK"
+        
     elif request.method == 'POST':
         # 處理 POST 請求的邏輯    
         # 取得 request headers 中的 X-Line-Signature 屬性
