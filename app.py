@@ -23,13 +23,26 @@ def adapt_uuid(uuid):
     return adapt(str(uuid))
 register_adapter(uuid.UUID, adapt_uuid)
 
+def send_line_notify(message, token):
+    url = 'https://notify-api.line.me/api/notify'
+    headers = {
+        'Authorization': 'Bearer ' + token
+    }
+    data = {
+        'message': message
+    }
+    response = requests.post(url, headers=headers, data=data)
+    return response
+
 
 @app.route("/callback", methods=['GET','POST'])
 def callback():
     
     if request.method == 'GET':
-        # 處理 GET 請求的邏輯
-        return "This is a GET request."
+        # 使用範例
+        token = 'PPb8rGTHk5j1Bz3YaGiDVGlJ1qQAxsyqYs7etGKVMAV' #Kong
+        message = '通知喔！'
+        response = send_line_notify(message, token)
     elif request.method == 'POST':
         # 處理 POST 請求的邏輯    
         # 取得 request headers 中的 X-Line-Signature 屬性
