@@ -24,7 +24,7 @@ def adapt_uuid(uuid):
 register_adapter(uuid.UUID, adapt_uuid)
 
 
-@app.route("/callback", methods=['POST'])
+@app.route("/callback", methods=['GET','POST'])
 def callback():
     # 取得 request headers 中的 X-Line-Signature 屬性
     signature = request.headers['X-Line-Signature']
