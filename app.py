@@ -71,6 +71,9 @@ def callback():
             message = (f"User: {user_name}, Last Pee Time: {last_pee_time}")
             response = send_line_notify(message)        
             return "OK"
+    
+        cursor.close()
+        connection.close()
         
     elif request.method == 'POST':
         # 處理 POST 請求的邏輯    
