@@ -112,7 +112,7 @@ def handle_message(event):
 
 
 
-    if event.source.type == 'user':
+    if event.source.type == 'user' or event.source.type == 'group' or event.source.type == 'room':
         profile = line_bot_api.get_profile(user_line_id)
         user_nickname = profile.display_name
 
