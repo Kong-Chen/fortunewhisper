@@ -23,10 +23,8 @@ def adapt_uuid(uuid):
     return adapt(str(uuid))
 register_adapter(uuid.UUID, adapt_uuid)
 
-#發送line_notify
-def send_line_notify(message):
+def send_line_notify(message, token):
     url = 'https://notify-api.line.me/api/notify'
-    token = 'TDlRiyRQOrHPIsN0MSfmkQ8cG1dvyllsz3RlBkXe8sG' #鬧鐘
     headers = {
         'Authorization': 'Bearer ' + token
     }
@@ -41,36 +39,12 @@ def send_line_notify(message):
 def callback():
     
     if request.method == 'GET':
-        
-        # 建立連接 (修改)
-        connection = psycopg2.connect(
-            host="dpg-cl490h1novjs73bvmclg-a.oregon-postgres.render.com",
-            port="5432",
-            database="dyps",
-            user="admin",
-            password="1tP8cSuVatmtgGQL4pOHMYEBGhnfPPQC"
-        )
-        cursor = connection.cursor()
-
-        # 提供兩個參數值
-        timezone_offset = 8  # 台灣時區的偏移量
-        hours_threshold = 3  # 超過三小時的閾值
-
-        # 使用 %s 作為占位符，並在 execute 的第二個參數中提供實際參數值
-        query = """
-            SELECT B.user_name, A.last_pee_time
-            FROM user_pee_cron A
-            JOIN users B ON A.user_no = B.user_no
-            WHERE A.last_pee_time < NOW() AT TIME ZONE 'UTC' + INTERVAL %s hours
-        """
-        cursor.execute(query, (timezone_offset - hours_threshold,))  # 注意這裡使用元組提供參數值
-        rows = cursor.fetchall()
-        
-        for row in rows:
-            user_name, last_pee_time = row
-            message = (f"User: {user_name}, Last Pee Time: {last_pee_time}")
-            response = send_line_notify(message)        
-            return "OK"
+        # 使用範例
+        # token = 'PPb8rGTHk5j1Bz3YaGiDVGlJ1qQAxsyqYs7etGKVMAV' #Kong
+        token = 'TDlRiyRQOrHPIsN0MSfmkQ8cG1dvyllsz3RlBkXe8sG' #鬧鐘
+        message = '通知喔！'
+        response = send_line_notify(message, token)
+        return "OK"
         
     elif request.method == 'POST':
         # 處理 POST 請求的邏輯    
