@@ -10,6 +10,7 @@ import psycopg2
 from datetime import datetime
 import mysql.connector
 import requests
+import re
 
 app = Flask(__name__)
 
@@ -166,8 +167,23 @@ def handle_message(event):
             )
             )
             
-        elif user_message =='Nasa':
-            a = 1
+        elif re.match(r'已經在\d{2}:\d{2}上廁所', user_message):
+            # user_message = '已經在15:45上廁所'
+            # 檢查是否符合格式
+                # 使用正規表達式匹配時間格式
+            pattern = r'已經在(\d{2}:\d{2})上廁所'
+            match = re.match(pattern, user_message)
+
+            if match:
+                time_value = match.group(1)
+                #print(f'匹配成功，時間是：{time_value}')
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text=time_value)
+                )
+
+            
+            
         else:
             line_bot_api.reply_message(
                 event.reply_token,
