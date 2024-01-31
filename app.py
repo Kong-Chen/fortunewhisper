@@ -105,7 +105,7 @@ def handle_message(event):
     timestamp = datetime.now()
     user_message = event.message.text
     user_line_id = event.source.user_id
-    user_nickname = None
+    user_nickname = profile.display_name
     
     
     #cursor = connection.cursor()
@@ -135,6 +135,7 @@ def handle_message(event):
             query = "INSERT INTO user_pee_cron (user_no,last_pee_time) VALUES (%s, %s)"
             data = (user_no,'1999/01/01 00:00:00.000')  
             cursor.execute(query, data)
+            connection.commit()
         
   
         
