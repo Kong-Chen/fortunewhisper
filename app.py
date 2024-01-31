@@ -105,8 +105,6 @@ def handle_message(event):
     timestamp = datetime.now()
     user_message = event.message.text
     user_line_id = event.source.user_id
-    user_nickname = profile.display_name
-    
     
     #cursor = connection.cursor()
     #cursor.execute("SELECT member_name FROM member")
@@ -164,13 +162,16 @@ def handle_message(event):
             ImageSendMessage(
                 original_content_url=data["url"],
                 preview_image_url=data["url"]
-        )
-    )
+            )
+            )
+            
+        elif user_message =='Nasa':
+            a = 1
         else:
             line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(text='123')
-        )
+            )
         
     except psycopg2.Error as e:
         # print("資料庫錯誤:", e)
