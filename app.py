@@ -66,7 +66,7 @@ def callback():
             user_name, last_pee_time = row
             message = ('\n' + f"{user_name},上一次廁所已經是{last_pee_time}!!!!")
             response = send_line_notify(message)        
-            return "OK"
+        return "OK"
     
         cursor.close()
         connection.close()
