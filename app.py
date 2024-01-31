@@ -52,10 +52,6 @@ def callback():
         )
         cursor = connection.cursor()
 
-        # 提供兩個參數值
-        timezone_offset = 8  # 台灣時區的偏移量
-        hours_threshold = 3  # 超過三小時的閾值
-
         # 使用 %s 作為占位符，並在 execute 的第二個參數中提供實際參數值
         query = """
             SELECT B.user_name, A.last_pee_time
@@ -68,7 +64,7 @@ def callback():
         
         for row in rows:
             user_name, last_pee_time = row
-            message = ('\n' + f"User: {user_name}, Last Pee Time: {last_pee_time}")
+            message = ('\n' + f"{user_name},上一次廁所已經是{last_pee_time}!!!!")
             response = send_line_notify(message)        
             return "OK"
     
@@ -95,23 +91,20 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     
-    # 建立連接 (修改)
-    """
-    connection = mysql.connector.connect(
-    host="fortune.ckgadenebkdr.ap-northeast-3.rds.amazonaws.com",
-    port="3306",
-    database="members",
-    user="admin",
-    password="Aa123456"
-    )
-    """
+    connection = psycopg2.connect(
+            host="dpg-cl490h1novjs73bvmclg-a.oregon-postgres.render.com",
+            port="5432",
+            database="dyps",
+            user="admin",
+            password="1tP8cSuVatmtgGQL4pOHMYEBGhnfPPQC"
+        )
+    cursor = connection.cursor()
 
     
     # 收到使用者的訊息
     timestamp = datetime.now()
     user_message = event.message.text
     user_line_id = event.source.user_id
-    user_id = None
     user_nickname = None
     
     
@@ -126,6 +119,25 @@ def handle_message(event):
         user_nickname = profile.display_name
 
     try:
+        cursor = connection.cursor()
+        query = "SELECT user_no FROM users WHERE user_id = %s"
+        cursor.execute(query, (user_line_id,))
+        user_no = cursor.fetchone()
+        if not user_no:
+            query = "INSERT INTO users (user_id, user_name) VALUES (%s, %s)"
+            data = (user_line_id, user_nickname)  
+            cursor.execute(query, data)
+            connection.commit()
+            query = "SELECT user_no FROM users WHERE user_id = %s"
+            cursor.execute(query, (user_line_id,))
+            user_no = cursor.fetchone()
+            
+            query = "INSERT INTO user_pee_cron (user_no,last_pee_time) VALUES (%s, %s)"
+            data = (user_no,'1999/01/01 00:00:00.000')  
+            cursor.execute(query, data)
+        
+  
+        
         if user_message =='Nasa':
             # API 密鑰
             api_key = "74K2SccksUYY9UL8P6FPb7oz3Vn0JFacjP5ZPdPh"
@@ -167,9 +179,9 @@ def handle_message(event):
         )
 
 
-    #finally:
-        # cursor.close()
-        # connection.close()
+    finally:
+        cursor.close()
+        connection.close()
 
 if __name__ == "__main__":
     # 在本地運行時才啟動伺服器
