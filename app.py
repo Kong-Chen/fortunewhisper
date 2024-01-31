@@ -68,7 +68,7 @@ def callback():
         
         for row in rows:
             user_name, last_pee_time = row
-            message = (f"User: {user_name}, Last Pee Time: {last_pee_time}")
+            message = ('\n' + f"User: {user_name}, Last Pee Time: {last_pee_time}")
             response = send_line_notify(message)        
             return "OK"
     
