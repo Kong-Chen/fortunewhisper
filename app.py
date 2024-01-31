@@ -40,7 +40,8 @@ def callback():
     
     if request.method == 'GET':
         # 使用範例
-        token = 'PPb8rGTHk5j1Bz3YaGiDVGlJ1qQAxsyqYs7etGKVMAV' #Kong
+        # token = 'PPb8rGTHk5j1Bz3YaGiDVGlJ1qQAxsyqYs7etGKVMAV' #Kong
+        token = 'TDlRiyRQOrHPIsN0MSfmkQ8cG1dvyllsz3RlBkXe8sG' #鬧鐘
         message = '通知喔！'
         response = send_line_notify(message, token)
         return "OK"
