@@ -63,7 +63,7 @@ def callback():
             JOIN users B ON A.user_no = B.user_no
             WHERE A.last_pee_time < NOW() AT TIME ZONE 'UTC' + INTERVAL %s hours
         """
-        cursor.execute(query, ((timezone_offset - hours_threshold),))
+        cursor.execute(query, (f"{timezone_offset - hours_threshold} hours",))
         rows = cursor.fetchall()
         
         for row in rows:
