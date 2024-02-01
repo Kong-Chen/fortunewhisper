@@ -176,18 +176,24 @@ def handle_message(event):
 
             if match:
                 time_value = match.group(1)
-                #print(f'匹配成功，時間是：{time_value}')
-                line_bot_api.reply_message(
-                    event.reply_token,
-                    TextSendMessage(text=time_value)
-                )
-
-            
-            
+                
+                try:
+                    datetime.strptime(time_value, '%H:%M')
+                    aaa = (f'匹配成功，時間是：{time_value} (格式正確)')
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text=aaa)
+                    )
+                except ValueError:
+                    aaa = ('未匹配到合法的24小時制時間')
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text=aaa)
+                    )                
         else:
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text='123')
+                TextSendMessage(text='不要亂打')
             )
         
     except psycopg2.Error as e:
