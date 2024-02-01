@@ -179,7 +179,11 @@ def handle_message(event):
                 
                 try:
                     datetime.strptime(time_value, '%H:%M')
-                    aaa = (f'匹配成功，時間是：{time_value} (格式正確)')
+                    current_date = datetime.now().strftime('%Y-%m-%d')
+                    combined_datetime_str = f'{current_date} {time_value}'
+                    combined_datetime = datetime.strptime(combined_datetime_str, '%Y-%m-%d %H:%M')                   
+                    aaa = (f'匹配成功，時間是：{combined_datetime}')
+                 
                     line_bot_api.reply_message(
                         event.reply_token,
                         TextSendMessage(text=aaa)
