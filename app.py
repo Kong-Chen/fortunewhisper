@@ -182,8 +182,13 @@ def handle_message(event):
                     current_date = datetime.now().strftime('%Y-%m-%d')
                     combined_datetime_str = f'{current_date} {time_value}'
                     combined_datetime = datetime.strptime(combined_datetime_str, '%Y-%m-%d %H:%M')                   
-                    aaa = (f'匹配成功，時間是：{combined_datetime}')
-                 
+                    
+                    query = "UPDATE user_pee_cron SET last_pee_time = %s WHERE user_no = %s)"
+                    data = (combined_datetime, user_no)  
+                    cursor.execute(query, data)
+                    connection.commit()
+                    
+                    aaa = (f'收到喔!更新時間為：{combined_datetime}')
                     line_bot_api.reply_message(
                         event.reply_token,
                         TextSendMessage(text=aaa)
