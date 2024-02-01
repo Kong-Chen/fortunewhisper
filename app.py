@@ -183,7 +183,7 @@ def handle_message(event):
                     combined_datetime_str = f'{current_date} {time_value}'
                     combined_datetime = datetime.strptime(combined_datetime_str, '%Y-%m-%d %H:%M')                   
                     
-                    query = "UPDATE user_pee_cron SET last_pee_time = %s WHERE user_no = %s)"
+                    query = "UPDATE user_pee_cron SET last_pee_time = %s WHERE user_no = %s"
                     data = (combined_datetime, user_no)  
                     cursor.execute(query, data)
                     connection.commit()
