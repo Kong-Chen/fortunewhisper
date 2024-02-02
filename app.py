@@ -49,7 +49,8 @@ def callback():
         eight_am = time(8, 0)
 
         if midnight <= current_time <= eight_am:
-
+            return "OK"
+        else :
             # 建立連接 (修改)
             connection = psycopg2.connect(
                 host="dpg-cl490h1novjs73bvmclg-a.oregon-postgres.render.com",
