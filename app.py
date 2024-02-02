@@ -11,6 +11,7 @@ from datetime import datetime
 import mysql.connector
 import requests
 import re
+from datetime import datetime, time
 
 app = Flask(__name__)
 
@@ -43,33 +44,39 @@ def callback():
     
     if request.method == 'GET':
         
-        # 建立連接 (修改)
-        connection = psycopg2.connect(
-            host="dpg-cl490h1novjs73bvmclg-a.oregon-postgres.render.com",
-            port="5432",
-            database="dyps",
-            user="admin",
-            password="1tP8cSuVatmtgGQL4pOHMYEBGhnfPPQC"
-        )
-        cursor = connection.cursor()
+        current_time = datetime.now().time()
+        midnight = time(0, 0)
+        eight_am = time(8, 0)
 
-        # 使用 %s 作為占位符，並在 execute 的第二個參數中提供實際參數值
-        query = """
-            SELECT B.user_name, A.last_pee_time
-            FROM user_pee_cron A
-            JOIN users B ON A.user_no = B.user_no
-            WHERE A.last_pee_time < NOW() AT TIME ZONE 'Asia/Taipei' - INTERVAL '3 hours'
-        """
-        cursor.execute(query, )
-        rows = cursor.fetchall()
-        
-        for row in rows:
-            user_name, last_pee_time = row
-            message = ('\n' + f"{user_name},上一次廁所已經是{last_pee_time} !!!!，更新範例為：已經在13:00上廁所")
-            response = send_line_notify(message)        
-        cursor.close()
-        connection.close()
-        return "OK"
+        if midnight <= current_time <= eight_am:
+
+            # 建立連接 (修改)
+            connection = psycopg2.connect(
+                host="dpg-cl490h1novjs73bvmclg-a.oregon-postgres.render.com",
+                port="5432",
+                database="dyps",
+                user="admin",
+                password="1tP8cSuVatmtgGQL4pOHMYEBGhnfPPQC"
+            )
+            cursor = connection.cursor()
+
+            # 使用 %s 作為占位符，並在 execute 的第二個參數中提供實際參數值
+            query = """
+                SELECT B.user_name, A.last_pee_time
+                FROM user_pee_cron A
+                JOIN users B ON A.user_no = B.user_no
+                WHERE A.last_pee_time < NOW() AT TIME ZONE 'Asia/Taipei' - INTERVAL '3 hours'
+            """
+            cursor.execute(query, )
+            rows = cursor.fetchall()
+            
+            for row in rows:
+                user_name, last_pee_time = row
+                message = ('\n' + f"{user_name},上一次廁所已經是{last_pee_time} !!!!，更新範例為：已經在13:00上廁所")
+                response = send_line_notify(message)        
+            cursor.close()
+            connection.close()
+            return "OK"
     
 
         
