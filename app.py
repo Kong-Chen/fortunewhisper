@@ -65,7 +65,7 @@ def callback():
         
         for row in rows:
             user_name, last_pee_time = row
-            message = ('\n' + f"@{user_name},上一次廁所已經是{last_pee_time}!!!!，更新範例為：已經在13:00上廁所")
+            message = ('\n' + f"{user_name},上一次廁所已經是{last_pee_time} !!!!，更新範例為：已經在13:00上廁所")
             response = send_line_notify(message)        
         cursor.close()
         connection.close()
