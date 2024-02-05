@@ -102,11 +102,11 @@ def callback():
 def handle_message(event):
     
     connection = psycopg2.connect(
-            host="dpg-cl490h1novjs73bvmclg-a.oregon-postgres.render.com",
+            host="dpg-cn09uaev3ddc73c0h73g-a.oregon-postgres.render.com",
             port="5432",
-            database="dyps",
-            user="admin",
-            password="1tP8cSuVatmtgGQL4pOHMYEBGhnfPPQC"
+            database="kongdb_r77a",
+            user="kong",
+            password="CvXiRmnIaTOESIwcUU0aAeuVkOYDOKWG"
         )
     cursor = connection.cursor()
 
