@@ -12,7 +12,7 @@ import mysql.connector
 import requests
 import re
 from datetime import datetime, time
-import pytz
+import pytz 
 
 
 app = Flask(__name__)
