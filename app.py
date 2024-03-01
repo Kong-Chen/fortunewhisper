@@ -11,7 +11,7 @@ from datetime import datetime
 import mysql.connector
 import requests
 import re
-from datetime import datetime, time
+from datetime import datetime, time, timedelta
 #import pytz 
 
 
@@ -46,17 +46,19 @@ def callback():
     
     if request.method == 'GET':
         
-        current_time = datetime.now().time()
+        #current_time = datetime.now().time()
+        # 取得現在的台灣時間
+        current_time_taiwan = datetime.now() + timedelta(hours=8)
+        current_time = current_time_taiwan.time()
         midnight = time(0, 0)
         eight_am = time(8, 0)
 
         # 設定台灣時區
         #taipei_timezone = pytz.timezone('Asia/Taipei')
 
-        # 取得現在的台灣時間
-        current_time_taipei = datetime.now(current_time).time()
 
-        if midnight <= current_time_taipei <= eight_am:
+
+        if midnight <= current_time <= eight_am:
             return "OK"
         else :
             # 建立連接 (修改)
