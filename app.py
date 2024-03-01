@@ -46,7 +46,6 @@ def callback():
     
     if request.method == 'GET':
         
-        
         # current_time = datetime.now().time()
         midnight = time(0, 0)
         eight_am = time(8, 0)
