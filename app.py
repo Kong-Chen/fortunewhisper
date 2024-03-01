@@ -12,7 +12,7 @@ import mysql.connector
 import requests
 import re
 from datetime import datetime, time
-import pytz 
+#import pytz 
 
 
 app = Flask(__name__)
@@ -46,15 +46,15 @@ def callback():
     
     if request.method == 'GET':
         
-        # current_time = datetime.now().time()
+        current_time = datetime.now().time()
         midnight = time(0, 0)
         eight_am = time(8, 0)
 
         # 設定台灣時區
-        taipei_timezone = pytz.timezone('Asia/Taipei')
+        #taipei_timezone = pytz.timezone('Asia/Taipei')
 
         # 取得現在的台灣時間
-        current_time_taipei = datetime.now(taipei_timezone).time()
+        current_time_taipei = datetime.now(current_time).time()
 
         if midnight <= current_time_taipei <= eight_am:
             return "OK"
